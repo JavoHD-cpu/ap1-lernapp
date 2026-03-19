@@ -30,7 +30,15 @@ interface WikiArticle {
   category: string;
   type: "article" | "cheatsheet" | "howto";
   tags: string[];
-  content: string; // Markdown string
+  content: string;
+  folder?: string; // e.g. "Schule/Lernfeld 5" or "Arbeit/Projekte"
+}
+
+interface WikiFolder {
+  id: string;
+  path: string;   // full path e.g. "Schule/Lernfeld 5"
+  name: string;   // display name e.g. "Lernfeld 5"
+  parent: string; // parent path e.g. "Schule" (empty string = root)
 }
 
 interface CustomQuestion {
@@ -66,6 +74,99 @@ export function registerRoutes(httpServer: Server, app: Express) {
     res.json({ ok: true });
   });
 
+  // ── Folders API ──────────────────────────────────────────────────────────
+  app.get("/api/wiki/folders", (_req, res) => {
+    const folders = readJson<WikiFolder[]>("folders.json");
+    res.json(folders);
+  });
+
+  app.post("/api/wiki/folders", (req, res) => {
+    const folders = readJson<WikiFolder[]>("folders.json");
+    const { name, parent = "" } = req.body as { name: string; parent?: string };
+
+    if (!name?.trim()) {
+      return res.status(400).json({ error: "name ist ein Pflichtfeld" });
+    }
+
+    const folderPath = parent ? `${parent}/${name.trim()}` : name.trim();
+
+    if (folders.find(f => f.path === folderPath)) {
+      return res.status(409).json({ error: "Ordner existiert bereits" });
+    }
+
+    const newFolder: WikiFolder = {
+      id: `folder-${Date.now()}`,
+      path: folderPath,
+      name: name.trim(),
+      parent,
+    };
+
+    folders.push(newFolder);
+    writeJson("folders.json", folders);
+    res.status(201).json(newFolder);
+  });
+
+  app.put("/api/wiki/folders/:id", (req, res) => {
+    const folders = readJson<WikiFolder[]>("folders.json");
+    const articles = readJson<WikiArticle[]>("wiki.json");
+    const idx = folders.findIndex(f => f.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: "Ordner nicht gefunden" });
+
+    const oldPath = folders[idx].path;
+    const { name } = req.body as { name: string };
+    if (!name?.trim()) return res.status(400).json({ error: "name ist ein Pflichtfeld" });
+
+    const newPath = folders[idx].parent
+      ? `${folders[idx].parent}/${name.trim()}`
+      : name.trim();
+
+    // Rename folder + update all children paths + update articles
+    const updatedFolders = folders.map(f => {
+      if (f.id === req.params.id) return { ...f, name: name.trim(), path: newPath };
+      if (f.path.startsWith(oldPath + "/")) {
+        return { ...f, path: f.path.replace(oldPath, newPath) };
+      }
+      return f;
+    });
+
+    const updatedArticles = articles.map(a => {
+      if (a.folder === oldPath) return { ...a, folder: newPath };
+      if (a.folder?.startsWith(oldPath + "/")) {
+        return { ...a, folder: a.folder.replace(oldPath, newPath) };
+      }
+      return a;
+    });
+
+    writeJson("folders.json", updatedFolders);
+    writeJson("wiki.json", updatedArticles);
+    res.json(updatedFolders[idx]);
+  });
+
+  app.delete("/api/wiki/folders/:id", (req, res) => {
+    const folders = readJson<WikiFolder[]>("folders.json");
+    const articles = readJson<WikiArticle[]>("wiki.json");
+    const folder = folders.find(f => f.id === req.params.id);
+    if (!folder) return res.status(404).json({ error: "Ordner nicht gefunden" });
+
+    // Remove folder + all sub-folders
+    const updatedFolders = folders.filter(
+      f => f.id !== req.params.id && !f.path.startsWith(folder.path + "/")
+    );
+
+    // Remove folder assignment from articles (articles stay, just lose their folder)
+    const updatedArticles = articles.map(a => {
+      if (a.folder === folder.path || a.folder?.startsWith(folder.path + "/")) {
+        const { folder: _f, ...rest } = a;
+        return rest as WikiArticle;
+      }
+      return a;
+    });
+
+    writeJson("folders.json", updatedFolders);
+    writeJson("wiki.json", updatedArticles);
+    res.json({ ok: true });
+  });
+
   // ── Wiki API ─────────────────────────────────────────────────────────────
   app.get("/api/wiki", (_req, res) => {
     const articles = readJson<WikiArticle[]>("wiki.json");
@@ -87,9 +188,9 @@ export function registerRoutes(httpServer: Server, app: Express) {
       type: body.type,
       tags: body.tags ?? [],
       content: body.content ?? "",
+      folder: body.folder || undefined,
     };
 
-    // Prevent duplicate IDs
     if (articles.find(a => a.id === newArticle.id)) {
       newArticle.id = `${newArticle.id}-${Date.now()}`;
     }
@@ -112,6 +213,7 @@ export function registerRoutes(httpServer: Server, app: Express) {
       type: body.type ?? articles[idx].type,
       tags: body.tags ?? articles[idx].tags,
       content: body.content ?? articles[idx].content,
+      folder: body.folder !== undefined ? (body.folder || undefined) : articles[idx].folder,
     };
     writeJson("wiki.json", articles);
     res.json(articles[idx]);

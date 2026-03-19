@@ -1,0 +1,9 @@
+[
+  { "id": "folder-schule", "path": "Schule", "name": "Schule", "parent": "" },
+  { "id": "folder-schule-lf1", "path": "Schule/Lernfeld 1", "name": "Lernfeld 1", "parent": "Schule" },
+  { "id": "folder-schule-lf2", "path": "Schule/Lernfeld 2", "name": "Lernfeld 2", "parent": "Schule" },
+  { "id": "folder-schule-pruef", "path": "Schule/Prüfungsvorbereitung", "name": "Prüfungsvorbereitung", "parent": "Schule" },
+  { "id": "folder-arbeit", "path": "Arbeit", "name": "Arbeit", "parent": "" },
+  { "id": "folder-arbeit-projekte", "path": "Arbeit/Projekte", "name": "Projekte", "parent": "Arbeit" },
+  { "id": "folder-arbeit-notizen", "path": "Arbeit/Notizen", "name": "Notizen", "parent": "Arbeit" }
+]
