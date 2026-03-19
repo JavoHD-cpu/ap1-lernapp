@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* AP1 Lern-App – deep navy + electric blue accent */
+    --background: 220 20% 8%;
+    --foreground: 210 20% 92%;
+
+    --card: 220 18% 12%;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 220 18% 12%;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 220 20% 8%;
+
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 210 20% 80%;
+
+    --muted: 220 15% 16%;
+    --muted-foreground: 215 15% 55%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 220 20% 8%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Topic colors */
+    --blue: 217 91% 60%;
+    --green: 142 71% 45%;
+    --red: 0 72% 55%;
+    --purple: 271 81% 65%;
+    --yellow: 48 96% 53%;
+    --orange: 25 95% 55%;
+    --teal: 173 80% 40%;
+    --indigo: 239 84% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Topic color utilities */
+.topic-blue    { color: hsl(var(--blue)); }
+.topic-green   { color: hsl(var(--green)); }
+.topic-red     { color: hsl(var(--red)); }
+.topic-purple  { color: hsl(var(--purple)); }
+.topic-yellow  { color: hsl(var(--yellow)); }
+.topic-orange  { color: hsl(var(--orange)); }
+.topic-teal    { color: hsl(var(--teal)); }
+.topic-indigo  { color: hsl(var(--indigo)); }
+
+.bg-topic-blue    { background-color: hsl(217 91% 60% / 0.15); border-color: hsl(217 91% 60% / 0.4); }
+.bg-topic-green   { background-color: hsl(142 71% 45% / 0.15); border-color: hsl(142 71% 45% / 0.4); }
+.bg-topic-red     { background-color: hsl(0 72% 55% / 0.15); border-color: hsl(0 72% 55% / 0.4); }
+.bg-topic-purple  { background-color: hsl(271 81% 65% / 0.15); border-color: hsl(271 81% 65% / 0.4); }
+.bg-topic-yellow  { background-color: hsl(48 96% 53% / 0.15); border-color: hsl(48 96% 53% / 0.4); }
+.bg-topic-orange  { background-color: hsl(25 95% 55% / 0.15); border-color: hsl(25 95% 55% / 0.4); }
+.bg-topic-teal    { background-color: hsl(173 80% 40% / 0.15); border-color: hsl(173 80% 40% / 0.4); }
+.bg-topic-indigo  { background-color: hsl(239 84% 67% / 0.15); border-color: hsl(239 84% 67% / 0.4); }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop {
+  0%   { transform: scale(0.95); }
+  60%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fadeInUp { animation: fadeInUp 0.35s ease both; }
+.animate-pop { animation: pop 0.25s ease both; }
+
+.correct-glow  { box-shadow: 0 0 0 2px hsl(142 71% 45% / 0.6); }
+.wrong-glow    { box-shadow: 0 0 0 2px hsl(0 72% 55% / 0.6); }
+
+/* Progress bar */
+.progress-bar {
+  height: 4px;
+  background: hsl(var(--muted));
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: hsl(var(--primary));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* Difficulty badges */
+.diff-leicht  { background: hsl(142 71% 45% / 0.2); color: hsl(142 71% 60%); }
+.diff-mittel  { background: hsl(48 96% 53% / 0.2);  color: hsl(48 96% 65%); }
+.diff-schwer  { background: hsl(0 72% 55% / 0.2);   color: hsl(0 72% 65%); }
