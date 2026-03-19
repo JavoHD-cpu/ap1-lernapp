@@ -7,6 +7,9 @@ import Home from "@/pages/home";
 import TopicPage from "@/pages/topic";
 import QuizPage from "@/pages/quiz";
 import StatsPage from "@/pages/stats";
+import FormulasPage from "@/pages/formulas";
+import GlossaryPage from "@/pages/glossary";
+import ExamPage from "@/pages/exam";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +21,9 @@ function Router() {
       <Route path="/quiz/:id" component={QuizPage} />
       <Route path="/quiz" component={QuizPage} />
       <Route path="/stats" component={StatsPage} />
+      <Route path="/formulas" component={FormulasPage} />
+      <Route path="/glossary" component={GlossaryPage} />
+      <Route path="/exam" component={ExamPage} />
       <Route component={NotFound} />
     </Switch>
     </WouterRouter>

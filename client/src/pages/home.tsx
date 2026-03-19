@@ -6,7 +6,8 @@ import type { UserProgress } from "../../../shared/schema";
 import {
   Network, Cpu, Shield, GitBranch, Code, Database, Briefcase, Server,
   CheckSquare, TrendingUp,
-  Trophy, RotateCcw, Zap, BookOpen, Target, ChevronRight
+  Trophy, RotateCcw, Zap, BookOpen, Target, ChevronRight,
+  Calculator, BookMarked, GraduationCap
 } from "lucide-react";
 
 const iconMap: Record<string, React.FC<{className?: string}>> = {
@@ -111,7 +112,7 @@ export default function Home() {
         )}
 
         {/* Actions */}
-        <div className="flex flex-wrap gap-3 mb-8 animate-fadeInUp" style={{animationDelay:'0.12s'}}>
+        <div className="flex flex-wrap gap-3 mb-6 animate-fadeInUp" style={{animationDelay:'0.12s'}}>
           <Link href="/quiz">
             <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-all hover:scale-105 active:scale-95" data-testid="btn-quiz-all">
               <Zap className="w-4 h-4" />
@@ -124,6 +125,12 @@ export default function Home() {
               Schwachstellen üben
             </button>
           </Link>
+          <Link href="/exam">
+            <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 font-medium text-sm hover:bg-yellow-500/30 transition-all hover:scale-105 active:scale-95" data-testid="btn-exam">
+              <GraduationCap className="w-4 h-4" />
+              Prüfungssimulation
+            </button>
+          </Link>
           {answered > 0 && (
             <button
               onClick={() => resetMutation.mutate()}
@@ -134,6 +141,34 @@ export default function Home() {
               Fortschritt zurücksetzen
             </button>
           )}
+        </div>
+
+        {/* Lernhilfen */}
+        <div className="grid grid-cols-2 gap-3 mb-8 animate-fadeInUp" style={{animationDelay:'0.14s'}}>
+          <Link href="/formulas">
+            <div className="group bg-card border border-border rounded-xl p-4 hover:border-blue-400/40 cursor-pointer transition-all hover:scale-[1.01]">
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <div className="p-1.5 rounded-lg bg-blue-500/15">
+                  <Calculator className="w-4 h-4 text-blue-400" />
+                </div>
+                <span className="font-semibold text-sm text-foreground">Formelsammlung</span>
+                <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto group-hover:text-foreground transition-colors" />
+              </div>
+              <p className="text-xs text-muted-foreground">Subnetting, Netzplan, RAID, Kalkulation & mehr</p>
+            </div>
+          </Link>
+          <Link href="/glossary">
+            <div className="group bg-card border border-border rounded-xl p-4 hover:border-purple-400/40 cursor-pointer transition-all hover:scale-[1.01]">
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <div className="p-1.5 rounded-lg bg-purple-500/15">
+                  <BookMarked className="w-4 h-4 text-purple-400" />
+                </div>
+                <span className="font-semibold text-sm text-foreground">Glossar</span>
+                <ChevronRight className="w-4 h-4 text-muted-foreground ml-auto group-hover:text-foreground transition-colors" />
+              </div>
+              <p className="text-xs text-muted-foreground">50+ Fachbegriffe kurz erklärt</p>
+            </div>
+          </Link>
         </div>
 
         {/* Topic Grid */}
