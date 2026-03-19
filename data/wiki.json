@@ -1,0 +1,98 @@
+[
+  {
+    "id": "osi-modell",
+    "title": "OSI-Referenzmodell",
+    "category": "Netzwerk",
+    "type": "article",
+    "tags": ["OSI", "Schichten", "Protokolle", "Netzwerk"],
+    "content": "Das OSI-Modell (Open Systems Interconnection) ist ein 7-Schichten-Referenzmodell, das beschreibt, wie Netzwerkkommunikation zwischen zwei Systemen funktioniert. Es wurde 1984 von der ISO standardisiert.\n\n## Die 7 Schichten im Überblick\n\n| # | Name (DE) | Name (EN) | Protokolle / Geräte |\n|---|---|---|---|\n| 7 | Anwendung | Application | HTTP, HTTPS, FTP, SMTP, DNS, DHCP |\n| 6 | Darstellung | Presentation | SSL/TLS, JPEG, MPEG, ASCII |\n| 5 | Sitzung | Session | NetBIOS, RPC, SMB |\n| 4 | Transport | Transport | TCP, UDP – Ports, Segmentierung |\n| 3 | Netzwerk | Network | IP, ICMP, ARP – Router |\n| 2 | Sicherung | Data Link | Ethernet, MAC, Switch, WLAN (802.11) |\n| 1 | Physisch | Physical | Kabel, Hub, NIC, Repeater |\n\n## Merkhilfen\n\n- Von unten nach oben (1→7): \"Physiker sehen nackte Transformatoren auf Autobahnen\"\n- Von oben nach unten (7→1): \"Alle deutschen Netzwerker trinken schwarzen Pils\"\n- Geräte: Hub=1, Switch=2, Router=3 – \"Einer Schachtel Rotkäppchen\"\n\n## TCP/IP vs. OSI\n\nIn der Praxis wird das TCP/IP-Modell verwendet (4 Schichten). Die Zuordnung: Anwendung (OSI 5-7), Transport (OSI 4), Internet (OSI 3), Netzzugang (OSI 1-2).\n\n> 💡 **Prüfungstipp:** In IHK-Prüfungen wird oft gefragt, auf welcher Schicht ein bestimmtes Protokoll oder Gerät arbeitet. Switch = Schicht 2, Router = Schicht 3, Firewall oft = Schicht 3-4."
+  },
+  {
+    "id": "subnetting-grundlagen",
+    "title": "Subnetting – Grundlagen",
+    "category": "Netzwerk",
+    "type": "article",
+    "tags": ["Subnetting", "IP", "CIDR", "Netzwerk"],
+    "content": "Subnetting bezeichnet die Aufteilung eines IP-Netzwerks in kleinere Teilnetze (Subnetze). Es ermöglicht effiziente IP-Adressvergabe und logische Netzwerktrennung.\n\n## Wichtige Grundbegriffe\n\n| Begriff | Erklärung | Beispiel |\n|---|---|---|\n| CIDR-Notation | Präfixlänge nach dem Schrägstrich | 192.168.1.0/24 |\n| Subnetzmaske | Bestimmt Netz- und Hostanteil | /24 = 255.255.255.0 |\n| Netzadresse | Erste Adresse – nicht nutzbar | 192.168.1.0 |\n| Broadcast | Letzte Adresse – nicht nutzbar | 192.168.1.255 |\n| Nutzbare Hosts | Alle Adressen dazwischen | 192.168.1.1 – .254 = 254 Hosts |\n\n## Formel: Hosts pro Subnetz\n\n```\nNutzbare Hosts = 2^(32 − Präfix) − 2\n\nBeispiele:\n/24 → 2^8  − 2 = 254 Hosts\n/25 → 2^7  − 2 = 126 Hosts\n/26 → 2^6  − 2 =  62 Hosts\n/27 → 2^5  − 2 =  30 Hosts\n/28 → 2^4  − 2 =  14 Hosts\n/30 → 2^2  − 2 =   2 Hosts (Punkt-zu-Punkt)\n```\n\n## Subnetzmaske schnell bestimmen\n\n```\nPräfix → letzte Oktet-Maske:\n/25 → 128  /26 → 192  /27 → 224\n/28 → 240  /29 → 248  /30 → 252\n```\n\n> 💡 **Prüfungstipp:** Schnelle Methode: Blockgröße = 256 − Subnetzmaske-Wert. Bei /26 (Maske 192): Blockgröße = 256−192 = 64. Subnetze: .0, .64, .128, .192"
+  },
+  {
+    "id": "it-sicherheit-cia",
+    "title": "IT-Sicherheit: CIA-Triad & Schutzmaßnahmen",
+    "category": "Sicherheit",
+    "type": "article",
+    "tags": ["CIA", "Sicherheit", "DSGVO", "BSI", "Datenschutz"],
+    "content": "Die IT-Sicherheit basiert auf drei Grundschutzzielen, bekannt als CIA-Triad. Alle Sicherheitsmaßnahmen lassen sich einem oder mehreren dieser Ziele zuordnen.\n\n## Die drei Schutzziele\n\n| Ziel | Englisch | Bedeutung | Beispielmaßnahme |\n|---|---|---|---|\n| Vertraulichkeit | Confidentiality | Daten nur für Befugte lesbar | Verschlüsselung, Zugriffskontrolle |\n| Integrität | Integrity | Daten unverfälscht und vollständig | Hashwerte, digitale Signaturen |\n| Verfügbarkeit | Availability | Systeme und Daten erreichbar | RAID, Backup, USV, Redundanz |\n\n## Wichtige Angriffsvektoren\n\n- Phishing – gefälschte E-Mails/Webseiten zur Dateneingabe\n- Social Engineering – Manipulation von Personen\n- Ransomware – Verschlüsselung von Dateien, Lösegeld\n- Man-in-the-Middle (MitM) – Kommunikation abfangen\n- SQL-Injection – schadhafter Code in Datenbankabfragen\n- DDoS – Überlastung eines Systems durch Massenanfragen\n\n## DSGVO – Wichtige Regeln\n\n- Gilt seit Mai 2018 in der gesamten EU\n- Meldepflicht bei Datenpannen: innerhalb 72 Stunden an Aufsichtsbehörde\n- Betroffenenrechte: Auskunft, Löschung (Recht auf Vergessenwerden), Berichtigung\n- Datensparsamkeit: nur notwendige Daten erheben\n- Verantwortlicher: Unternehmen das Daten verarbeitet\n\n> 💡 **Prüfungstipp:** CIA steht für Confidentiality, Integrity, Availability – nicht für die US-Behörde. In der Prüfung werden Maßnahmen oft einer dieser drei Kategorien zugeordnet."
+  },
+  {
+    "id": "projektmanagement-methoden",
+    "title": "Projektmanagement: Klassisch vs. Agil",
+    "category": "Projektmanagement",
+    "type": "article",
+    "tags": ["Scrum", "Wasserfall", "Kanban", "Agil", "PM"],
+    "content": "Projektmanagement beschreibt die Planung, Steuerung und den Abschluss von Projekten. Grundsätzlich unterscheidet man klassische (sequentielle) und agile (iterative) Vorgehensmodelle.\n\n## Vergleich: Wasserfall vs. Scrum\n\n| Kriterium | Wasserfall | Scrum |\n|---|---|---|\n| Vorgehensweise | Sequentiell, Phasen nacheinander | Iterativ, kurze Sprints |\n| Anforderungen | Am Anfang vollständig definiert | Evolving Backlog |\n| Flexibilität | Gering – Änderungen schwierig | Hoch – Anpassung jederzeit |\n| Dokumentation | Umfangreich (Lasten-/Pflichtenheft) | Minimal (User Stories) |\n| Eignung | Klare, stabile Anforderungen | Unklare, sich ändernde Anforderungen |\n\n## Scrum – Rollen & Events\n\n- Rollen: Product Owner (Backlog-Verantwortung), Scrum Master (Moderator), Entwicklungsteam\n- Events: Sprint (1–4 Wochen), Sprint Planning, Daily Scrum, Sprint Review, Retrospektive\n- Artefakte: Product Backlog, Sprint Backlog, Increment\n\n## Netzplantechnik\n\nZur Projektplanung wird häufig die Netzplantechnik verwendet. Jeder Vorgang hat: FAZ (frühester Anfang), FEZ (frühestes Ende), SAZ (spätester Anfang), SEZ (spätestes Ende) und GP (Gesamtpuffer).\n\n```\nVorwärtsrechnung:  FAZ + Dauer = FEZ\nRückwärtsrechnung: SEZ − Dauer = SAZ\nGesamtpuffer:      GP = SAZ − FAZ\nKritischer Pfad:   alle Vorgänge mit GP = 0\n```\n\n> 💡 **Prüfungstipp:** Lastenheft = WAS will der Auftraggeber (Anforderungen). Pflichtenheft = WIE setzt der Auftragnehmer es um (Lösung)."
+  },
+  {
+    "id": "datenbanken-grundlagen",
+    "title": "Datenbanken: ER-Modell & SQL",
+    "category": "Datenbanken",
+    "type": "article",
+    "tags": ["SQL", "ER-Modell", "Normalisierung", "Datenbank"],
+    "content": "Relationale Datenbanken speichern Daten in Tabellen mit Zeilen (Datensätze) und Spalten (Attribute). Das ER-Modell dient dem Datenbankentwurf, SQL ist die Abfragesprache.\n\n## ER-Modell – Kardinalitäten\n\n| Beziehung | Bedeutung | Beispiel |\n|---|---|---|\n| 1:1 | Ein Datensatz ↔ ein Datensatz | Person hat einen Reisepass |\n| 1:N | Ein Datensatz ↔ viele Datensätze | Kunde hat viele Bestellungen |\n| N:M | Viele ↔ viele (Zwischentabelle!) | Schüler belegen viele Kurse |\n\n## SQL – Wichtige Befehle\n\n```sql\n-- Daten abfragen\nSELECT name, email FROM kunden WHERE land = 'DE' ORDER BY name;\n\n-- Tabellen verknüpfen\nSELECT k.name, b.betrag\nFROM kunden k JOIN bestellungen b ON k.id = b.kunden_id;\n\n-- Daten einfügen / ändern / löschen\nINSERT INTO kunden (name, email) VALUES ('Max', 'max@test.de');\nUPDATE kunden SET email = 'neu@test.de' WHERE id = 1;\nDELETE FROM kunden WHERE id = 1;\n\n-- Aggregation\nSELECT COUNT(*), AVG(betrag), MAX(betrag) FROM bestellungen;\n```\n\n## Normalisierung\n\n- 1NF: Atomare Werte – keine Wiederholungsgruppen\n- 2NF: Keine partiellen Abhängigkeiten vom Primärschlüssel\n- 3NF: Keine transitiven Abhängigkeiten (A→B→C auflösen)\n- Faustregel: Wenn Änderung eines Werts Folgeänderungen erzwingt → normalisieren\n\n> 💡 **Prüfungstipp:** N:M-Beziehungen müssen immer durch eine Zwischentabelle (Assoziationstabelle) aufgelöst werden."
+  },
+  {
+    "id": "cheat-osi",
+    "title": "Cheat Sheet: OSI-Modell",
+    "category": "Netzwerk",
+    "type": "cheatsheet",
+    "tags": ["OSI", "Protokolle", "Cheat Sheet"],
+    "content": "## OSI-Schichten & Protokolle\n\n| Layer | Name | Protokolle | Geräte | PDU |\n|---|---|---|---|---|\n| 7 | Anwendung | HTTP, HTTPS, FTP, SMTP, DNS, DHCP, SNMP | – | Daten |\n| 6 | Darstellung | SSL/TLS, MIME, JPEG, MPEG | – | Daten |\n| 5 | Sitzung | NetBIOS, RPC, SMB, NFS | – | Daten |\n| 4 | Transport | TCP (verbindungsorientiert), UDP (verbindungslos) | – | Segment/Datagramm |\n| 3 | Netzwerk | IPv4, IPv6, ICMP, ARP, OSPF, BGP | Router, L3-Switch | Paket |\n| 2 | Sicherung | Ethernet, MAC, PPP, WLAN (802.11) | Switch, Bridge | Frame |\n| 1 | Physisch | Koaxialkabel, Glasfaser, WLAN (physisch) | Hub, Repeater, NIC | Bit |\n\n## TCP vs. UDP\n\n| Eigenschaft | TCP | UDP |\n|---|---|---|\n| Verbindung | Verbindungsorientiert (3-Way-Handshake) | Verbindungslos |\n| Zuverlässigkeit | Garantierte Zustellung, Reihenfolge | Keine Garantie |\n| Geschwindigkeit | Langsamer (Overhead) | Schneller |\n| Anwendungen | HTTP, FTP, SSH, SMTP | DNS, DHCP, VoIP, Streaming |\n\n## Wichtige Portnummern\n\n| Port | Protokoll | Beschreibung |\n|---|---|---|\n| 20/21 | FTP | File Transfer (Daten/Steuerung) |\n| 22 | SSH | Secure Shell |\n| 23 | Telnet | Unsichere Remote-Verwaltung (veraltet) |\n| 25 | SMTP | E-Mail senden |\n| 53 | DNS | Namensauflösung |\n| 67/68 | DHCP | IP-Adressvergabe |\n| 80 | HTTP | Web unverschlüsselt |\n| 110 | POP3 | E-Mail abrufen |\n| 143 | IMAP | E-Mail abrufen (mit Synchronisation) |\n| 443 | HTTPS | Web verschlüsselt (TLS) |\n| 3389 | RDP | Remote Desktop Protocol |"
+  },
+  {
+    "id": "cheat-raid",
+    "title": "Cheat Sheet: RAID-Systeme",
+    "category": "Hardware",
+    "type": "cheatsheet",
+    "tags": ["RAID", "Speicher", "Festplatte", "Cheat Sheet"],
+    "content": "## RAID-Übersicht\n\n| RAID | Name | Min. Platten | Kapazität | Ausfalltoleranz | Vorteil |\n|---|---|---|---|---|---|\n| 0 | Striping | 2 | n × Größe | 0 (keine!) | Max. Performance |\n| 1 | Mirroring | 2 | 1× Größe | 1 Platte | Einfache Redundanz |\n| 5 | Striping + Parität | 3 | (n−1) × Größe | 1 Platte | Gut balanciert |\n| 6 | Doppelte Parität | 4 | (n−2) × Größe | 2 Platten | Hohe Sicherheit |\n| 10 | RAID 1+0 | 4 | (n/2) × Größe | 1 je Spiegel-Paar | Performance + Sicherheit |\n\n## Kapazitäts-Beispiele\n\n```\n4 × 2 TB:\n  RAID 0: 4 × 2 = 8 TB   (kein Schutz)\n  RAID 1: 1 × 2 = 2 TB   (nur 2 Platten)\n  RAID 5: 3 × 2 = 6 TB\n  RAID 6: 2 × 2 = 4 TB\n  RAID10: 2 × 2 = 4 TB   (4 Platten = 2 Paare)\n```\n\n> ⚠️ **Wichtig:** RAID ist kein Backup! RAID schützt vor Hardwareausfall, nicht vor versehentlichem Löschen, Ransomware oder Feuer/Diebstahl. Immer zusätzlich Backups anlegen.\n\n## 3-2-1-Backup-Regel\n\n- **3** Kopien der Daten insgesamt\n- **2** verschiedene Speichermedien (z.B. Festplatte + NAS)\n- **1** Kopie extern/offsite (z.B. Cloud oder anderer Standort)"
+  },
+  {
+    "id": "cheat-sql",
+    "title": "Cheat Sheet: SQL-Befehle",
+    "category": "Datenbanken",
+    "type": "cheatsheet",
+    "tags": ["SQL", "Datenbank", "Cheat Sheet"],
+    "content": "## DDL – Datenstruktur definieren\n\n```sql\nCREATE TABLE kunden (\n  id      INT PRIMARY KEY AUTO_INCREMENT,\n  name    VARCHAR(100) NOT NULL,\n  email   VARCHAR(150) UNIQUE,\n  land    CHAR(2) DEFAULT 'DE'\n);\n\nALTER TABLE kunden ADD COLUMN telefon VARCHAR(20);\nDROP TABLE kunden;\n```\n\n## DML – Daten manipulieren\n\n```sql\nINSERT INTO kunden (name, email) VALUES ('Max Müller', 'max@test.de');\nUPDATE kunden SET land = 'AT' WHERE id = 5;\nDELETE FROM kunden WHERE land = 'XX';\n```\n\n## DQL – Daten abfragen\n\n```sql\n-- Grundabfrage\nSELECT name, email FROM kunden WHERE land = 'DE' ORDER BY name ASC LIMIT 10;\n\n-- JOIN (Verknüpfung)\nSELECT k.name, b.betrag, b.datum\nFROM kunden k\nINNER JOIN bestellungen b ON k.id = b.kunden_id\nWHERE b.betrag > 100;\n\n-- Aggregation mit GROUP BY\nSELECT land, COUNT(*) AS anzahl, AVG(betrag) AS schnitt\nFROM kunden k JOIN bestellungen b ON k.id = b.kunden_id\nGROUP BY land\nHAVING COUNT(*) > 5;\n```\n\n## JOIN-Typen\n\n| JOIN-Typ | Ergebnis |\n|---|---|\n| INNER JOIN | Nur Datensätze die in BEIDEN Tabellen vorkommen |\n| LEFT JOIN | ALLE aus linker Tabelle + passende aus rechter (NULL wenn kein Match) |\n| RIGHT JOIN | ALLE aus rechter Tabelle + passende aus linker |\n| FULL OUTER JOIN | Alle aus beiden Tabellen |"
+  },
+  {
+    "id": "cheat-scrum",
+    "title": "Cheat Sheet: Scrum",
+    "category": "Projektmanagement",
+    "type": "cheatsheet",
+    "tags": ["Scrum", "Agil", "Cheat Sheet", "Sprint"],
+    "content": "## Scrum auf einen Blick\n\n| Element | Beschreibung | Dauer / Häufigkeit |\n|---|---|---|\n| Sprint | Iteration mit konkretem Ziel | 1–4 Wochen |\n| Sprint Planning | Team plant den Sprint | Zu Beginn jedes Sprints |\n| Daily Scrum | 15-min Statusmeeting | Täglich |\n| Sprint Review | Ergebnis dem Product Owner zeigen | Am Sprintende |\n| Retrospektive | Prozessverbesserung im Team | Nach Review |\n\n## Rollen\n\n| Rolle | Aufgaben |\n|---|---|\n| Product Owner | Priorisiert Product Backlog, vertritt Kundenwunsch, definiert Akzeptanzkriterien |\n| Scrum Master | Moderiert Events, entfernt Hindernisse, coacht das Team im Scrum-Prozess |\n| Entwicklungsteam | Selbstorganisiert, cross-funktional, liefert potenziell auslieferbares Inkrement |\n\n## Artefakte\n\n- **Product Backlog** – priorisierte Liste aller Anforderungen (User Stories)\n- **Sprint Backlog** – Aufgaben des aktuellen Sprints\n- **Increment** – das fertige, funktionierende Ergebnis nach dem Sprint\n- **Definition of Done (DoD)** – wann gilt eine Aufgabe als abgeschlossen?\n\n## User Story Format\n\n```\nAls [Rolle] möchte ich [Funktionalität],\ndamit ich [Nutzen/Ziel] erreiche.\n\nBeispiel:\nAls Kunde möchte ich meine Bestellung online verfolgen,\ndamit ich weiß, wann sie ankommt.\n```"
+  },
+  {
+    "id": "howto-subnetting",
+    "title": "How-To: Subnetz berechnen",
+    "category": "Netzwerk",
+    "type": "howto",
+    "tags": ["Subnetting", "CIDR", "How-To", "Berechnung"],
+    "content": "Schritt-für-Schritt-Anleitung zur Subnetzberechnung – wie sie in IHK-Prüfungen verlangt wird.\n\n> **Beispielaufgabe:** Gegeben: IP-Adresse 192.168.10.75 /26 — Gesucht: Subnetzmaske, Netzadresse, Broadcast, nutzbare Hosts\n\n## Schritt 1: Subnetzmaske aus Präfix\n\n```\n/26 = 26 Einsen = 11111111.11111111.11111111.11000000\n                 = 255    .255    .255    .192\n\nFaustregel: 256 − 192 = 64 → Blockgröße ist 64\n```\n\n## Schritt 2: Subnetz-Block bestimmen\n\n```\nBlöcke bei /26: .0, .64, .128, .192\n\n75 liegt zwischen 64 und 128\n→ Netzadresse: 192.168.10.64\n→ Broadcast:   192.168.10.127  (nächster Block −1)\n```\n\n## Schritt 3: Hosts berechnen\n\n```\nNutzbare Hosts = 2^(32−26) − 2 = 2^6 − 2 = 64 − 2 = 62\nErste Hostadresse: 192.168.10.65\nLetzte Hostadresse: 192.168.10.126\n```\n\n## Zusammenfassung\n\n| Ergebnis | Wert |\n|---|---|\n| Subnetzmaske | 255.255.255.192 |\n| Netzadresse | 192.168.10.64 |\n| Broadcast | 192.168.10.127 |\n| Nutzbare Hosts | 62 (von .65 bis .126) |\n\n> 💡 **Merke:** Blockgröße = 256 − letzter Subnetzmasken-Wert. Netzadresse = Vielfaches der Blockgröße, das ≤ Host-Teil ist. Broadcast = Netzadresse + Blockgröße − 1."
+  },
+  {
+    "id": "howto-netzplan",
+    "title": "How-To: Netzplan erstellen und berechnen",
+    "category": "Projektmanagement",
+    "type": "howto",
+    "tags": ["Netzplan", "FAZ", "FEZ", "GP", "Kritischer Pfad", "How-To"],
+    "content": "Ein Netzplan visualisiert Vorgänge, ihre Abhängigkeiten und Zeitpuffer. Ziel ist es, den kritischen Pfad zu finden – also die Vorgänge ohne Puffer, die das Projektende direkt beeinflussen.\n\n## Vorgangsknoten (Standardformat)\n\n```\n┌──────┬───────┬──────┐\n│ FAZ  │  D    │ FEZ  │\n├──────┼───────┼──────┤\n│  VP  │       │  GP  │\n├──────┼───────┼──────┤\n│ SAZ  │       │ SEZ  │\n└──────┴───────┴──────┘\n\nD   = Dauer      FAZ = Frühester Anfangszeitpunkt\nVP  = Vorgang    FEZ = Frühester Endzeitpunkt\nGP  = Puffer     SAZ = Spätester Anfangszeitpunkt\n                 SEZ = Spätester Endzeitpunkt\n```\n\n## Schritt 1 – Vorwärtsrechnung (FAZ/FEZ)\n\n```\nFAZ des ersten Vorgangs = 0\nFEZ = FAZ + Dauer\nFAZ des Nachfolgers = FEZ des Vorgängers\nBei mehreren Vorgängern: MAX aller FEZ-Werte nehmen\n```\n\n## Schritt 2 – Rückwärtsrechnung (SAZ/SEZ)\n\n```\nSEZ des letzten Vorgangs = FEZ des letzten Vorgangs\nSAZ = SEZ − Dauer\nSEZ des Vorgängers = SAZ des Nachfolgers\nBei mehreren Nachfolgern: MIN aller SAZ-Werte nehmen\n```\n\n## Schritt 3 – Gesamtpuffer (GP)\n\n```\nGP = SAZ − FAZ  (oder: SEZ − FEZ)\n\nGP = 0 → Vorgang liegt auf dem kritischen Pfad\nGP > 0 → Vorgang kann verschoben werden\n```\n\n## Beispielrechnung\n\n| Vorgang | Dauer | Vorgänger | FAZ | FEZ | SAZ | SEZ | GP |\n|---|---|---|---|---|---|---|---|\n| A | 3 | – | 0 | 3 | 0 | 3 | 0 ★ |\n| B | 5 | A | 3 | 8 | 3 | 8 | 0 ★ |\n| C | 2 | A | 3 | 5 | 6 | 8 | 3 |\n| D | 4 | B,C | 8 | 12 | 8 | 12 | 0 ★ |\n\n> **Kritischer Pfad:** A → B → D (alle GP = 0). C hat 3 Tage Puffer.\n\n> 💡 **Prüfungstipp:** In der Prüfung immer zuerst vollständig Vorwärtsrechnen, dann Rückwärtsrechnen, dann GP berechnen."
+  },
+  {
+    "id": "howto-er-diagramm",
+    "title": "How-To: ER-Diagramm lesen und erstellen",
+    "category": "Datenbanken",
+    "type": "howto",
+    "tags": ["ER-Modell", "Datenbank", "Kardinalität", "How-To"],
+    "content": "Das Entity-Relationship-Modell (ERM) dient dem konzeptionellen Datenbankentwurf. Es beschreibt Entitäten, ihre Attribute und die Beziehungen untereinander.\n\n## Symbole im ER-Diagramm (Chen-Notation)\n\n| Symbol | Bedeutung |\n|---|---|\n| Rechteck | Entität (z.B. Kunde, Produkt, Bestellung) |\n| Ellipse | Attribut (z.B. Name, Adresse, Preis) |\n| Linie | Beziehung zwischen Entitäten |\n| Doppelrechteck | Schwache Entität (existiert nur mit Besitzer-Entität) |\n| Unterstrich | Primärschlüssel-Attribut |\n\n## Kardinalitäten lesen\n\n```\n1:1   Jeder Mitarbeiter hat genau ein Büro\n      Mitarbeiter ──1────1── Büro\n\n1:N   Ein Kunde hat viele Bestellungen\n      Kunde ──1────N── Bestellung\n\nN:M   Studenten belegen viele Kurse, Kurse haben viele Studenten\n      Student ──N────M── Kurs\n      → Auflösung durch Zwischentabelle!\n```\n\n## Schritt-für-Schritt: ERM aus Text ableiten\n\n1. Substantive identifizieren → potenzielle Entitäten (Kunde, Bestellung, Produkt)\n2. Verben identifizieren → potenzielle Beziehungen (kauft, enthält, liefert)\n3. Kardinalitäten bestimmen: Wie viele A können mit wie vielen B in Beziehung stehen?\n4. Attribute zuordnen: Was beschreibt jede Entität? (Name, Datum, Preis...)\n5. Primärschlüssel wählen: eindeutig identifizierendes Attribut (ID, Kundennummer)\n6. N:M-Beziehungen durch Zwischentabellen mit eigenem Primärschlüssel auflösen\n\n## Vom ERM zur Tabelle (Relationales Modell)\n\n```\nEntitäten → Tabellen\nAttribute → Spalten\nPrimärschlüssel → PRIMARY KEY\n1:N-Beziehung → Fremdschlüssel in der N-Seite\nN:M-Beziehung → eigene Zwischentabelle\n\nBeispiel:\nKunde(KundenID, Name, Email)\nBestellung(BestellID, Datum, KundenID*)   ← FK\nProdukt(ProduktID, Name, Preis)\nBestellposition(BestellID*, ProduktID*, Menge)  ← Zwischentabelle\n```\n\n> 💡 **Prüfungstipp:** N:M-Beziehungen IMMER durch eine Zwischentabelle auflösen. Diese enthält die Primärschlüssel beider Entitäten als Fremdschlüssel und kann eigene Attribute haben (z.B. Menge)."
+  }
+]

@@ -12,6 +12,7 @@ import StatsPage from "@/pages/stats";
 import FormulasPage from "@/pages/formulas";
 import GlossaryPage from "@/pages/glossary";
 import ExamPage from "@/pages/exam";
+import FragenEditorPage from "@/pages/fragen-editor";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -33,6 +34,7 @@ function Router() {
         <Route path="/quiz/:id" component={QuizPage} />
         <Route path="/quiz" component={QuizPage} />
         <Route path="/stats" component={StatsPage} />
+        <Route path="/fragen-editor" component={FragenEditorPage} />
 
         <Route component={NotFound} />
       </Switch>

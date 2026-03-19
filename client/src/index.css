@@ -115,3 +115,124 @@
 .diff-leicht  { background: hsl(142 71% 45% / 0.2); color: hsl(142 71% 60%); }
 .diff-mittel  { background: hsl(48 96% 53% / 0.2);  color: hsl(48 96% 65%); }
 .diff-schwer  { background: hsl(0 72% 55% / 0.2);   color: hsl(0 72% 65%); }
+
+/* ── Wiki Markdown Renderer ──────────────────────────────────────────────── */
+.wiki-markdown {
+  color: hsl(210 20% 88%);
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+.wiki-markdown h1, .wiki-markdown h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: hsl(210 20% 95%);
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid hsl(220 15% 22%);
+}
+.wiki-markdown h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: hsl(210 20% 92%);
+  margin-top: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+.wiki-markdown p {
+  margin-bottom: 0.75rem;
+  color: hsl(210 20% 85%);
+}
+.wiki-markdown ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+  space-y: 0.35rem;
+}
+.wiki-markdown ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.wiki-markdown li {
+  margin-bottom: 0.3rem;
+  color: hsl(210 20% 85%);
+}
+.wiki-markdown li::marker {
+  color: hsl(217 91% 60%);
+}
+.wiki-markdown code {
+  background: hsl(220 20% 14%);
+  border: 1px solid hsl(220 15% 22%);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.82em;
+  color: hsl(199 95% 74%);
+}
+.wiki-markdown pre {
+  background: hsl(220 22% 11%);
+  border: 1px solid hsl(220 15% 20%);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.wiki-markdown pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  color: hsl(199 95% 74%);
+  line-height: 1.6;
+}
+.wiki-markdown blockquote {
+  border-left: 3px solid hsl(217 91% 60% / 0.5);
+  background: hsl(217 91% 60% / 0.07);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  color: hsl(210 20% 80%);
+  font-size: 0.85rem;
+}
+.wiki-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid hsl(220 15% 22%);
+}
+.wiki-markdown thead tr {
+  background: hsl(220 18% 16%);
+}
+.wiki-markdown th {
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: hsl(210 20% 90%);
+  white-space: nowrap;
+  border-bottom: 1px solid hsl(220 15% 22%);
+}
+.wiki-markdown td {
+  padding: 0.5rem 0.75rem;
+  color: hsl(210 20% 82%);
+  border-top: 1px solid hsl(220 15% 18%);
+}
+.wiki-markdown tbody tr:nth-child(even) {
+  background: hsl(220 18% 10%);
+}
+.wiki-markdown strong {
+  font-weight: 600;
+  color: hsl(210 20% 95%);
+}
+.wiki-markdown a {
+  color: hsl(217 91% 65%);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.wiki-markdown hr {
+  border: none;
+  border-top: 1px solid hsl(220 15% 22%);
+  margin: 1.5rem 0;
+}

@@ -4,7 +4,8 @@ import { topics } from "../../../shared/questions";
 import type { UserProgress } from "../../../shared/schema";
 import {
   BookOpen, Zap, Calculator, BookMarked, GraduationCap,
-  ChevronRight, Trophy, Network, Cpu, Shield, GitBranch
+  ChevronRight, Trophy, Network, Cpu, Shield, GitBranch,
+  HelpCircle
 } from "lucide-react";
 
 // ── Module registry – add a new object here to add a module ──────────────────
@@ -63,6 +64,17 @@ const modules = [
     color: "purple",
     badge: null,
     gradient: "from-purple-500/20 to-purple-600/5",
+  },
+  {
+    id: "fragen-editor",
+    href: "/fragen-editor",
+    title: "Fragen-Editor",
+    subtitle: "Eigene Fragen",
+    description: "Erstelle eigene Prüfungsfragen: Multiple Choice, Schreibaufgaben, Rechenaufgaben.",
+    icon: HelpCircle,
+    color: "cyan",
+    badge: "Neu",
+    gradient: "from-cyan-500/20 to-cyan-600/5",
   },
   // Future modules – uncomment to activate:
   // { id: "subnet", href: "/subnet-calc", title: "Subnet Calculator", subtitle: "Live Tool", description: "IP-Adresse eingeben, Subnetzmaske berechnen.", icon: Network, color: "cyan", badge: "Bald", gradient: "from-cyan-500/20 to-cyan-600/5" },
