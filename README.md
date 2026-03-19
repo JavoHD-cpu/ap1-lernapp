@@ -46,12 +46,4 @@ npm run build
 NODE_ENV=production node dist/index.cjs
 ```
 
-## Basierend auf
 
-- IHK AP1 Prüfung Frühjahr 2026 (Fachinformatiker Systemintegration)
-- Offizieller IHK-Prüfungskatalog (Oktober 2024)
-- Verschiedene IHK-Übungsprüfungen
-
----
-
-Erstellt mit [Perplexity Computer](https://www.perplexity.ai/computer)
