@@ -2,14 +2,15 @@ import { Link } from "wouter";
 import { useState, useMemo, useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { marked } from "marked";
 import {
   ArrowLeft, BookOpen, Search, ChevronRight, Network, Cpu,
   Shield, GitBranch, Code, Database, Briefcase, Server,
   FileText, ListChecks, BookMarked,
   Plus, Pencil, Trash2, Save, X, Eye, EyeOff, Tag,
-  Folder, FolderOpen, FolderPlus, ChevronDown, ChevronUp,
-  MoreHorizontal, Check, Home
+  Folder, FolderOpen, FolderPlus, ChevronDown,
+  MoreHorizontal, Home, GripVertical
 } from "lucide-react";
 
 marked.setOptions({ breaks: true, gfm: true });
@@ -80,9 +81,11 @@ interface FolderSidebarProps {
   activeFolder: string | null; // null = all articles
   onSelectFolder: (path: string | null) => void;
   onFoldersChanged: () => void;
+  draggingId: string | null;
+  onDrop: (articleId: string, folderPath: string | null) => void;
 }
 
-function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFoldersChanged }: FolderSidebarProps) {
+function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFoldersChanged, draggingId, onDrop }: FolderSidebarProps) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({ "": true, Schule: true, Arbeit: true });
   const [newFolderParent, setNewFolderParent] = useState<string | null>(null);
   const [newFolderName, setNewFolderName] = useState("");
@@ -90,6 +93,7 @@ function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFold
   const [renameValue, setRenameValue] = useState("");
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [dragOver, setDragOver] = useState<string | null>(null);
 
   const createMutation = useMutation({
     mutationFn: ({ name, parent }: { name: string; parent: string }) =>
@@ -128,9 +132,14 @@ function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFold
       <div key={folder.id}>
         <div
           className={`group flex items-center gap-1.5 px-2 py-1.5 rounded-lg cursor-pointer transition-colors text-xs ${
-            isActive ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+            dragOver === folder.path
+              ? "bg-primary/30 border border-primary/60 text-primary"
+              : isActive ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
           }`}
           style={{ paddingLeft: `${8 + depth * 14}px` }}
+          onDragOver={e => { if (draggingId) { e.preventDefault(); setDragOver(folder.path); } }}
+          onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(null); }}
+          onDrop={e => { e.preventDefault(); if (draggingId) { onDrop(draggingId, folder.path); setDragOver(null); } }}
         >
           {/* Expand toggle */}
           <button
@@ -259,8 +268,13 @@ function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFold
         {/* All articles */}
         <button
           onClick={() => onSelectFolder(null)}
+          onDragOver={e => { if (draggingId) { e.preventDefault(); setDragOver("__all__"); } }}
+          onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(null); }}
+          onDrop={e => { e.preventDefault(); if (draggingId) { onDrop(draggingId, null); setDragOver(null); } }}
           className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-            activeFolder === null ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+            dragOver === "__all__"
+              ? "bg-primary/30 border border-primary/60 text-primary"
+              : activeFolder === null ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
           }`}
         >
           <Home className="w-3.5 h-3.5" />
@@ -269,11 +283,16 @@ function FolderSidebar({ folders, articles, activeFolder, onSelectFolder, onFold
         </button>
 
         {/* Unfiled */}
-        {unfiledCount > 0 && (
+        {(unfiledCount > 0 || draggingId) && (
           <button
             onClick={() => onSelectFolder("__unfiled__")}
+            onDragOver={e => { if (draggingId) { e.preventDefault(); setDragOver("__unfiled__"); } }}
+            onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(null); }}
+            onDrop={e => { e.preventDefault(); if (draggingId) { onDrop(draggingId, null); setDragOver(null); } }}
             className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs transition-colors ${
-              activeFolder === "__unfiled__" ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+              dragOver === "__unfiled__"
+                ? "bg-primary/30 border border-primary/60 text-primary"
+                : activeFolder === "__unfiled__" ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
@@ -595,6 +614,9 @@ export default function WikiPage() {
   const [selectedArticle, setSelectedArticle] = useState<WikiArticle | null>(null);
   const [editingArticle, setEditingArticle] = useState<WikiArticle | null | undefined>(undefined);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+
+  const { toast } = useToast();
 
   const { data: articles = [], isLoading } = useQuery<WikiArticle[]>({ queryKey: ["/api/wiki"] });
   const { data: folders = [] } = useQuery<WikiFolder[]>({ queryKey: ["/api/wiki/folders"] });
@@ -603,6 +625,33 @@ export default function WikiPage() {
     mutationFn: (id: string) => apiRequest("DELETE", `/api/wiki/${id}`),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["/api/wiki"] }); setSelectedArticle(null); },
   });
+
+  const moveMutation = useMutation({
+    mutationFn: ({ id, folder }: { id: string; folder: string | null }) =>
+      apiRequest("PUT", `/api/wiki/${id}`, { folder: folder ?? "" }),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/wiki"] });
+      const targetFolder = variables.folder;
+      const article = articles.find(a => a.id === variables.id);
+      toast({
+        title: "Artikel verschoben",
+        description: targetFolder
+          ? `„${article?.title ?? "Artikel"}" → ${targetFolder}`
+          : `„${article?.title ?? "Artikel"}" aus Ordner entfernt`,
+      });
+    },
+  });
+
+  function handleDrop(articleId: string, folderPath: string | null) {
+    setDraggingId(null);
+    const article = articles.find(a => a.id === articleId);
+    if (!article) return;
+    // Skip if already in that folder
+    const currentFolder = article.folder || null;
+    if (currentFolder === folderPath) return;
+    if (!currentFolder && !folderPath) return;
+    moveMutation.mutate({ id: articleId, folder: folderPath });
+  }
 
   const categories = useMemo(() => ["alle", ...Array.from(new Set(articles.map(a => a.category))).sort()], [articles]);
 
@@ -685,6 +734,8 @@ export default function WikiPage() {
             activeFolder={activeFolder}
             onSelectFolder={setActiveFolder}
             onFoldersChanged={() => queryClient.invalidateQueries({ queryKey: ["/api/wiki/folders"] })}
+            draggingId={draggingId}
+            onDrop={handleDrop}
           />
         )}
 
@@ -759,13 +810,24 @@ export default function WikiPage() {
                     const typ = typeConfig[article.type];
                     const CatIcon = cat?.icon ?? BookOpen;
                     const TypIcon = typ.icon;
+                    const isDraggingThis = draggingId === article.id;
                     return (
-                      <button key={article.id} onClick={() => setSelectedArticle(article)}
-                        className="group text-left bg-card border border-border rounded-2xl p-4 hover:border-primary/40 transition-all hover:scale-[1.02] animate-fadeInUp"
-                        style={{ animationDelay: `${i * 0.04}s` }}>
+                      <div
+                        key={article.id}
+                        draggable
+                        onDragStart={e => { e.dataTransfer.effectAllowed = "move"; setDraggingId(article.id); }}
+                        onDragEnd={() => setDraggingId(null)}
+                        className={`group text-left bg-card border border-border rounded-2xl p-4 hover:border-primary/40 transition-all hover:scale-[1.02] animate-fadeInUp cursor-grab active:cursor-grabbing ${
+                          isDraggingThis ? "opacity-40 scale-95 border-primary/50" : ""
+                        }`}
+                        style={{ animationDelay: `${i * 0.04}s` }}
+                      >
                         <div className="flex items-start justify-between mb-3">
-                          <div className={`p-2 rounded-lg ${colorBg[cat?.color ?? "blue"]}`}>
-                            <CatIcon className={`w-4 h-4 ${colorText[cat?.color ?? "blue"]}`} />
+                          <div className="flex items-center gap-1.5">
+                            <GripVertical className="w-3.5 h-3.5 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors flex-shrink-0" />
+                            <div className={`p-2 rounded-lg ${colorBg[cat?.color ?? "blue"]}`}>
+                              <CatIcon className={`w-4 h-4 ${colorText[cat?.color ?? "blue"]}`} />
+                            </div>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full ${colorBg[typ.color]} ${colorText[typ.color]}`}>
@@ -777,22 +839,27 @@ export default function WikiPage() {
                             </button>
                           </div>
                         </div>
-                        <h3 className="font-semibold text-foreground text-sm mb-1 line-clamp-2">{article.title}</h3>
-                        {article.folder && (
-                          <p className="text-xs text-muted-foreground/70 mb-0.5 flex items-center gap-1">
-                            <Folder className="w-3 h-3" />{article.folder}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground mb-3">{article.category}</p>
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-wrap gap-1">
-                            {article.tags.slice(0, 2).map(tag => (
-                              <span key={tag} className="text-xs bg-secondary/60 text-muted-foreground px-1.5 py-0.5 rounded">#{tag}</span>
-                            ))}
+                        <button
+                          className="w-full text-left"
+                          onClick={() => setSelectedArticle(article)}
+                        >
+                          <h3 className="font-semibold text-foreground text-sm mb-1 line-clamp-2">{article.title}</h3>
+                          {article.folder && (
+                            <p className="text-xs text-muted-foreground/70 mb-0.5 flex items-center gap-1">
+                              <Folder className="w-3 h-3" />{article.folder}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground mb-3">{article.category}</p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-wrap gap-1">
+                              {article.tags.slice(0, 2).map(tag => (
+                                <span key={tag} className="text-xs bg-secondary/60 text-muted-foreground px-1.5 py-0.5 rounded">#{tag}</span>
+                              ))}
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
                           </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors flex-shrink-0" />
-                        </div>
-                      </button>
+                        </button>
+                      </div>
                     );
                   })}
                 </div>
