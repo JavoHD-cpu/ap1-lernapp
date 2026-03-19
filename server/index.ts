@@ -90,14 +90,10 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "5000", 10);
-  httpServer.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
-    () => {
-      log(`serving on port ${port}`);
-    },
-  );
+  // Windows does not support reusePort or binding to 0.0.0.0 on all Node versions.
+  // Use 127.0.0.1 (localhost) as a safe default that works on all platforms.
+  const host = process.platform === "win32" ? "127.0.0.1" : "0.0.0.0";
+  httpServer.listen(port, host, () => {
+    log(`serving on port ${port}`);
+  });
 })();
